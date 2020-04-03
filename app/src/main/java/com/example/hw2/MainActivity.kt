@@ -7,8 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import kotlin.math.sqrt
 
-class MainActivity : AppCompatActivity() {
-    /*
+/*
     lateinit var b0: Button
     lateinit var b1: Button
     lateinit var b2: Button
@@ -19,8 +18,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var b7: Button
     lateinit var b8: Button
     lateinit var b9: Button
-
-     */
     lateinit var bsqrt: Button
     lateinit var bsqr: Button
     lateinit var bper: Button
@@ -32,8 +29,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var bdel: Button
     lateinit var bdot: Button
     lateinit var bres: Button
-//    lateinit var input: TextView
-//    lateinit var oper: TextView
+
+     */
+
+class MainActivity : AppCompatActivity() {
+    lateinit var input: TextView
+    lateinit var oper: TextView
     var a: Double = 0.0
     var b: Double = 0.0
     var res: Double = 0.0
@@ -43,13 +44,14 @@ class MainActivity : AppCompatActivity() {
     var sec: Boolean = false
     var complete: Boolean = false
     var entermode: Int = 1
+    var f: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val input: TextView = findViewById(R.id.input)
-        val oper: TextView = findViewById(R.id.oper)
+        input = findViewById(R.id.input)
+        oper = findViewById(R.id.oper)
         val b0: Button = findViewById(R.id.b0)
         val b1: Button = findViewById(R.id.b1)
         val b2: Button = findViewById(R.id.b2)
@@ -61,62 +63,79 @@ class MainActivity : AppCompatActivity() {
         val b8: Button = findViewById(R.id.b8)
         val b9: Button = findViewById(R.id.b9)
 
-        b0.setOnClickListener{
+        b0.setOnClickListener {
             buttonClicked(0)
         }
-        b1.setOnClickListener{
+        b1.setOnClickListener {
             buttonClicked(1)
         }
-        b2.setOnClickListener{
+        b2.setOnClickListener {
             buttonClicked(2)
         }
-        b3.setOnClickListener{
+        b3.setOnClickListener {
             buttonClicked(3)
         }
-        b4.setOnClickListener{
+        b4.setOnClickListener {
             buttonClicked(4)
         }
-        b5.setOnClickListener{
+        b5.setOnClickListener {
             buttonClicked(5)
         }
-        b6.setOnClickListener{
+        b6.setOnClickListener {
             buttonClicked(6)
         }
-        b7.setOnClickListener{
+        b7.setOnClickListener {
             buttonClicked(7)
         }
-        b8.setOnClickListener{
+        b8.setOnClickListener {
             buttonClicked(8)
         }
-        b9.setOnClickListener{
+        b9.setOnClickListener {
             buttonClicked(9)
         }
 
-        bsqrt = findViewById(R.id.bsqrt)
-        bsqr = findViewById(R.id.bsqr)
-        bper = findViewById(R.id.bper)
-        bclear = findViewById(R.id.bclear)
-        bsum = findViewById(R.id.bsum)
-        bdif = findViewById(R.id.bdif)
-        bmult = findViewById(R.id.bmult)
-        bdiv = findViewById(R.id.bdiv)
-        bdel = findViewById(R.id.bdel)
-        bdot = findViewById(R.id.bdot)
-        bres = findViewById(R.id.bres)
+        val bsqrt: Button = findViewById(R.id.bsqrt)
+        val bsqr: Button = findViewById(R.id.bsqr)
+        val bper: Button = findViewById(R.id.bper)
+        val bclear: Button = findViewById(R.id.bclear)
+        val bsum: Button = findViewById(R.id.bsum)
+        val bdif: Button = findViewById(R.id.bdif)
+        val bmult: Button = findViewById(R.id.bmult)
+        val bdiv: Button = findViewById(R.id.bdiv)
+        val bdel: Button = findViewById(R.id.bdel)
+        val bdot: Button = findViewById(R.id.bdot)
+        val bres: Button = findViewById(R.id.bres)
 
-        bsqrt.setOnClickListener{
+        bsqrt.setOnClickListener {
             monoFunctionClicked("sqrt")
             oper.text = "sqrt("
         }
-        bsqr.setOnClickListener{
+        bsqr.setOnClickListener {
             monoFunctionClicked("sqr")
             oper.text = "sqr("
         }
-        bper.setOnClickListener{
+        bper.setOnClickListener {
             monoFunctionClicked("per")
             oper.text = "%"
         }
-        bclear.setOnClickListener{
+        bsum.setOnClickListener {
+            biFunctionClicked("sum")
+            oper.text = "+"
+        }
+        bdif.setOnClickListener {
+            biFunctionClicked("dif")
+            oper.text = "-"
+        }
+        bmult.setOnClickListener {
+            biFunctionClicked("mult")
+            oper.text = "*"
+        }
+        bdiv.setOnClickListener {
+            biFunctionClicked("div")
+            oper.text = "/"
+        }
+
+        bclear.setOnClickListener {
             input.text = "0"
             a = 0.0
             b = 0.0
@@ -129,69 +148,58 @@ class MainActivity : AppCompatActivity() {
             oper.text = ""
             entermode = 1
         }
-        bsum.setOnClickListener{
-            biFunctionClicked("sum")
-            oper.text = "+"
-        }
-        bdif.setOnClickListener{
-            biFunctionClicked("dif")
-            oper.text = "-"
-        }
-        bmult.setOnClickListener{
-            biFunctionClicked("mult")
-            oper.text = "*"
-        }
-        bdiv.setOnClickListener{
-            biFunctionClicked("div")
-            oper.text = "/"
-        }
-        bdel.setOnClickListener{
-            if (isWord())
+        bdel.setOnClickListener {
+            if (isWord()){
                 input.text = "0"
-            else if (input.text.length!=1){
-                var s = input.text.toString()
-                var s1 = s.substring(0, s.length-1)
-                input.text = s1
             } else {
-                input.text = "0"
-                oper.text = ""
+                if (input.text.contains("-") && input.text.length==2){
+                    input.text="0"
+                } else if (input.text.length != 1){
+                    var s = input.text.toString()
+                    var s1 = s.substring(0, s.length - 1)
+                    input.text = s1
+                } else {
+                    input.text = "0"
+                    oper.text = ""
+                }
             }
             if (entermode == 1)
                 a = input.text.toString().toDouble()
             else
                 b = input.text.toString().toDouble()
         }
-        bdot.setOnClickListener{
+        bdot.setOnClickListener {
             if (input.text == "")
                 input.text = "0."
             else {
-                if (!input.text.contains(".") && isWord()){
+                if (!input.text.contains(".") && isWord()) {
                     val s = input.text.toString() + "."
                     input.text = s
                 }
             }
         }
-        bres.setOnClickListener{
-            if (entermode==1 && input.text.contains(".")){
-                if (input.text=="0.0")
+
+        bres.setOnClickListener {
+            if (entermode == 1 && input.text.contains(".")) {
+                if (input.text == "0.0")
                     input.text = "0"
                 else
-                    while (input.text[input.text.length-1]=='0'){
+                    while (input.text[input.text.length - 1] == '0') {
                         var s: String = input.text.toString()
-                        var s1: String = s.substring(0, s.length-1)
-                        if (s1[s1.length-1]=='.')
-                            s1 = s1.substring(0, s1.length-1)
+                        var s1: String = s.substring(0, s.length - 1)
+                        if (s1[s1.length - 1] == '.')
+                            s1 = s1.substring(0, s1.length - 1)
                         input.text = s1
                     }
             }
-            if (bi!=""){
+            if (bi != "") {
                 biFunction(bi)
-                if (error!=""){
+                if (error != "") {
                     input.text = error
                     error = ""
                 } else {
-                    if (isPossibleToConvert()){
-                        var s = res.toString().substring(0, res.toString().length-2)
+                    if (isPossibleToConvert(res)) {
+                        var s = res.toString().substring(0, res.toString().length - 2)
                         input.text = s
                     } else
                         input.text = res.toString()
@@ -204,99 +212,130 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun monoFunction(operation: String){
-        var k: Double
-        if (entermode == 1) k = a else k = b
-        when (operation){
-            "sqr"-> res = k*k
-            "sqrt"-> if (k>0) res = sqrt(k) else error = "impossible"
-            "per"->res = k / 100;
+    fun monoFunction(operation: String) {
+        val k: Double
+        if (entermode == 1) {
+            k = a
+        } else {
+            k = b
         }
-        if (entermode==1) a = res else b = res
-
-
-    }
-    fun biFunction(operation: String){
-        when (operation){
-            "sum"-> res = a + b
-            "dif"-> res = a - b
-            "mult"-> res = a*b
-            "div"-> if (b!=0.0) res = a/b else error = "impossible"
+        when (operation) {
+            "sqr" -> res = k * k
+            "sqrt" -> if (k > 0) {
+                res = sqrt(k)
+            } else {
+                error = "impossible"
+                oper.text = ""
+            }
+            "per" -> res = k / 100;
+        }
+        if (entermode == 1) {
+            a = res
+        } else {
+            b = res
         }
     }
-    fun isWord():Boolean{
-        when (input.text.toString()){
-            ""->return true
-            "impossible"->return true
-            "NaN"->return true
-            "Infinity"->return true
+
+    fun biFunction(operation: String) {
+        when (operation) {
+            "sum" -> res = a + b
+            "dif" -> res = a - b
+            "mult" -> res = a * b
+            "div" -> if (b != 0.0) {
+                res = a / b
+            } else {
+                error = "impossible"
+                oper.text = ""
+            }
+        }
+    }
+
+    fun isWord(): Boolean {
+        when (input.text.toString()) {
+            "" -> return true
+            "impossible" -> return true
+            "NaN" -> return true
+            "Infinity" -> return true
         }
         if (input.text.toString().contains('E'))
             return true
         return false
     }
 
-    fun isPossibleToConvert(): Boolean{
-        if (res%1==0.0) return true
+    fun isPossibleToConvert(res: Double): Boolean {
+        if (res % 1 == 0.0) return true
         return false
     }
-    fun buttonClicked(n: Int){
+
+    fun buttonClicked(n: Int) {
         var s: String = n.toString()
-        if (n==0 && input.text.toString() == "0") {}
-        else {
-            if (input.text.toString() == "0" || isWord() || complete){
+        if (n == 0 && input.text.toString() == "0") {
+        } else {
+            if (input.text.toString() == "0" || isWord() || complete) {
                 input.text = s
                 complete = false
             } else {
-                var k: String = input.text.toString()
+                val k: String = input.text.toString()
                 input.text = k + s
             }
-            if (bi != "")
+            if (bi != "") {
                 sec = true
-            if (entermode == 1)
+            }
+            if (entermode == 1) {
                 a = input.text.toString().toDouble()
-            else
+            } else {
                 b = input.text.toString().toDouble()
+            }
         }
     }
-    fun monoFunctionClicked(operation: String){
+
+    fun monoFunctionClicked(operation: String) {
+        if (isWord()){
+            input.text = "0"
+        }
         monoFunction(operation)
-        if (error != ""){
+        if (error != "") {
             input.text = error
             error = ""
         } else {
-            if (isPossibleToConvert()){
-                var s:String = res.toString().substring(0, res.toString().length-2)
+            if (isPossibleToConvert(res)) {
+                var s: String = res.toString().substring(0, res.toString().length - 2)
                 input.text = s
             } else
                 input.text = res.toString()
         }
         complete = true
     }
-    fun biFunctionClicked(operation: String){
-        if (entermode == 1 && input.text.toString().contains(".")){
-            if (input.text.equals("0.0"))
+
+    fun biFunctionClicked(operation: String) {
+        if (isWord()){
+            input.text = "0"
+        }
+        if (entermode == 1 && input.text.toString().contains(".")) {
+            if (input.text == "0.0"){
                 input.text = "0"
+            }
             else
-                while (input.text[input.text.toString().length-1]=='0'){
-                    var s = input.text.toString()
-                    var s1 = s.substring(0, s.length-1)
+                while (input.text[input.text.toString().length - 1] == '0') {
+                    val s = input.text.toString()
+                    val s1 = s.substring(0, s.length - 1)
                     input.text = s1
                 }
         }
         entermode = 2
-        b = input.text as Double
-        if (bi!="" && sec) {
+        b = input.text.toString().toDouble()
+        if (bi != "" && sec) {
             biFunction(bi)
             if (error != "") {
                 input.text = error
                 error = ""
             } else {
-                if (isPossibleToConvert()) {
+                if (isPossibleToConvert(res)) {
                     var s: String = res.toString().substring(0, res.toString().length - 2)
                     input.text = s
-                } else
+                } else {
                     input.text = res.toString()
+                }
             }
             a = res
             b = res
