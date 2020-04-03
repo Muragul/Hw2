@@ -7,31 +7,6 @@ import android.widget.TextView
 import android.widget.Toast
 import kotlin.math.sqrt
 
-/*
-    lateinit var b0: Button
-    lateinit var b1: Button
-    lateinit var b2: Button
-    lateinit var b3: Button
-    lateinit var b4: Button
-    lateinit var b5: Button
-    lateinit var b6: Button
-    lateinit var b7: Button
-    lateinit var b8: Button
-    lateinit var b9: Button
-    lateinit var bsqrt: Button
-    lateinit var bsqr: Button
-    lateinit var bper: Button
-    lateinit var bclear: Button
-    lateinit var bsum: Button
-    lateinit var bdif: Button
-    lateinit var bmult: Button
-    lateinit var bdiv: Button
-    lateinit var bdel: Button
-    lateinit var bdot: Button
-    lateinit var bres: Button
-
-     */
-
 class MainActivity : AppCompatActivity() {
     lateinit var input: TextView
     lateinit var oper: TextView
