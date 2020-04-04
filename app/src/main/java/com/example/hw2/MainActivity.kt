@@ -144,14 +144,10 @@ class MainActivity : AppCompatActivity() {
                 b = input.text.toString().toDouble()
         }
         bdot.setOnClickListener {
-            if (input.text == "")
-                input.text = "0."
-            else {
-                if (!input.text.contains(".") && isWord()) {
+                if (!input.text.contains(".") && !isWord()) {
                     val s = input.text.toString() + "."
                     input.text = s
                 }
-            }
         }
 
         bres.setOnClickListener {
